@@ -1,25 +1,28 @@
 import React, {Component} from 'react';
+import uuid from 'uuid';
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 import './App.css';
 import Todos from './components/Todos';
 import Header from './components/layout/Header';
 import AddTodo from './components/AddTodo';
+import About from './components/pages/About';
 //import { render } from 'react-dom';
 
 class App extends Component {
   state = {
     todos: [
       {
-        id: 1,
+        id: uuid.v4(),
         title: 'Buy food',
         completed: false
       },
       {
-        id: 2,
+        id: uuid.v4(),
         title: 'Edit pics',
         completed: false
       },
       {
-        id: 3,
+        id: uuid.v4(),
         title: 'Go to the church',
         completed: false
       },
@@ -39,7 +42,7 @@ class App extends Component {
   addTodo = (title) => {
     //console.log(title)
     const newTodo = {
-      id: 4,
+      id: uuid.v4(),
       title,
       completed: false
     }
@@ -55,11 +58,20 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header />
-        <AddTodo addTodo={this.addTodo} />
-        <Todos todos={this.state.todos} markCompleted={this.markCompleted} delTodo={this.delTodo} />
-      </div>
+      <Router>
+        <div className="App">
+          <div classname="container">
+            <Header />
+            <Route exact path="/" render={props => (
+              <React.Fragment>
+                <AddTodo addTodo={this.addTodo} />
+                <Todos todos={this.state.todos} markCompleted={this.markCompleted} delTodo={this.delTodo} />
+              </React.Fragment>
+            )} /> 
+          <Route path="/about" component={About} />
+          </div>
+        </div>
+      </Router>
     );
   }
 }
